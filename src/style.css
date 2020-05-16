@@ -1,0 +1,23 @@
+#feed {
+  margin: auto;
+  width: 50%;
+  height: auto;
+  border: 3px solid green;
+  margin-top: 1em;
+}
+
+.white {
+    color: white;
+}
+
+.black-bg {
+    background-color:black;
+}
+
+.center {
+    margin: 0 auto;
+}
+
+.no-margin {
+    margin: 0;
+}
