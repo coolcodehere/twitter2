@@ -1,23 +1,50 @@
-#feed {
-  margin: auto;
-  width: 50%;
-  height: auto;
-  border: 3px solid green;
+body {
+  background-image: url("https://blogs.gartner.com/avivah-litan/files/2019/08/web30decentralizedweb-1024x576.gif");
+}
+
+#grid {
+  width: 80%;
+  height: 100%;
+  display: grid;
+  grid-template-columns:  auto auto auto auto auto auto auto auto auto auto;
+  grid-template-rows: auto auto auto auto auto auto auto auto auto auto;
+  grid-gap: 5px;
+}
+
+#container {
+  display:flex;
+  width: 1000px;
+  height: 800px;
   margin-top: 1em;
+  padding: 5px;
+}
+
+#sidebar {
+  width: 20%;
+  background-color: aliceblue;
+  flex-basis: auto;
+}
+
+.green-border {
+  border: 3px solid green;
+}
+
+.inline {
+  display: inline;
 }
 
 .white {
-    color: white;
+  color: white;
 }
 
 .black-bg {
-    background-color:black;
+  background-color:black;
 }
 
 .center {
-    margin: 0 auto;
+  margin: 0 auto;
 }
 
 .no-margin {
-    margin: 0;
+  margin: 0;
 }

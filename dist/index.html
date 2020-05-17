@@ -9,7 +9,7 @@
   <meta name="author" content="CoolCodeHere">
 
   <link rel="stylesheet" href="..\node_modules\bootstrap\dist\css\bootstrap.min.css">
-  <link rel="stylesheet" href="../src/style.css">
+  <link rel="stylesheet" href="..\src\style.css">
 </head>
 
 <body>
@@ -18,10 +18,22 @@
   </nav>
 
   <main>
-    <div id="feed" class="center black-bg">
-      
+    <div id="container" class="center green-border">
+      <div id="grid" class="black-bg green-border">
+    
+      </div>
+
+      <div id="sidebar" class="green-border">
+        <form>
+          <input type="radio" name="brush" value="finish">Finish</input><br/>
+          <input type="radio" name="brush" value="begin">Begin</input><br/>
+          <input type="radio" name="brush" value="wall">Wall</input><br/>    
+        </form>
+        <button id="start">Start!</button>
+      </div>
     </div>
   </main>
   <!--<script src="main.js"></script>-->
+  <script src="../src/index.js"></script>
 </body>
 </html>
