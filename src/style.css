@@ -6,9 +6,11 @@ body {
   width: 80%;
   height: 100%;
   display: grid;
-  grid-template-columns:  auto auto auto auto auto auto auto auto auto auto;
-  grid-template-rows: auto auto auto auto auto auto auto auto auto auto;
   grid-gap: 5px;
+}
+#grid > div {
+  background-size: cover;
+  background-position: center center;
 }
 
 #container {

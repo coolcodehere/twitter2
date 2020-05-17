@@ -1,5 +1,7 @@
 const grid = document.getElementById("grid")
 const gridSize = 10
+grid.style.gridTemplateColumns = `repeat(${gridSize}, auto)`;
+grid.style.gridTemplatRows = `repeat(${gridSize}, auto)`;
 var start
 var finish
 let brush
@@ -23,7 +25,7 @@ const startClickListener = document.getElementById("start").addEventListener("cl
 })
 
 function getPair(x, y) {
-  return {x:x, y:y} 
+  return {x:x, y:y}
 }
 
 function equals(p1, p2) {
@@ -41,7 +43,7 @@ function isValidCoord(coordinatePair) {
   if (x >= 0 && y >= 0 && x < gridSize && y < gridSize && adjacencyMatrix[y][x].getAttribute("state") != "wall") {
     return true
   }
-  
+
   return false
 }
 
@@ -56,7 +58,7 @@ function getPath(lastChild, startCoordinatePair, parentMap) {
   let currPair = lastChild
   console.log("getPath", parentMap);
 
-  while (currPair !== undefined && computeKey(currPair) !== 
+  while (currPair !== undefined && computeKey(currPair) !==
         computeKey(startCoordinatePair)) {
     path.push(currPair)
     currPair = parentMap[computeKey(currPair)]
@@ -82,22 +84,22 @@ async function bfs(startCoordinatePair, endCoordinatePair) {
     c = (c + 1) % colors.length;
     await sleep(2);
     currPair = q.shift()
-    
+
 
     if (computeKey(currPair) == computeKey(endCoordinatePair)) {
       return getPath(currPair, startCoordinatePair, parentMap)
     }
 
-    let pairs = [getPair(currPair.x, currPair.y + 1), 
-                getPair(currPair.x, currPair.y - 1), 
-                getPair(currPair.x + 1, currPair.y), 
+    let pairs = [getPair(currPair.x, currPair.y + 1),
+                getPair(currPair.x, currPair.y - 1),
+                getPair(currPair.x + 1, currPair.y),
                 getPair(currPair.x - 1, currPair.y),
-                getPair(currPair.x + 1, currPair.y + 1), 
-                getPair(currPair.x - 1, currPair.y - 1), 
-                getPair(currPair.x + 1, currPair.y - 1), 
+                getPair(currPair.x + 1, currPair.y + 1),
+                getPair(currPair.x - 1, currPair.y - 1),
+                getPair(currPair.x + 1, currPair.y - 1),
                 getPair(currPair.x - 1, currPair.y + 1)]
 
-    for (let i = 0; i < pairs.length; i++) {  
+    for (let i = 0; i < pairs.length; i++) {
       if (isValidCoord(pairs[i]) && visited[computeKey(pairs[i])] === undefined) {
         console.log(pairs[i], !visited[computeKey(pairs[i])])
         visited[computeKey(pairs[i])] = true
@@ -122,7 +124,7 @@ for (let y = 0; y < gridSize; y++) {
     adjacencyMatrix[y][x] = gridElement
     gridElement.style.backgroundColor = "white"
     gridElement.style.cursor = "pointer"
-    
+
     gridElement.onclick = () => {
       switch (brush) {
         case "wall":
@@ -133,7 +135,7 @@ for (let y = 0; y < gridSize; y++) {
         case "begin":
           if (start) {
             start.style.backgroundColor = "white"
-          } 
+          }
           start = gridElement
           gridElement.style.backgroundColor = "blue"
           gridElement.setAttribute("state", "start");
@@ -147,7 +149,7 @@ for (let y = 0; y < gridSize; y++) {
           gridElement.style.backgroundColor = 'red'
           gridElement.setAttribute("state", "finish");
           break
-      } 
+      }
     }
 
   grid.appendChild(gridElement)
