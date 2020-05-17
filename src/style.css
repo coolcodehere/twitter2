@@ -10,7 +10,9 @@ body {
   grid-template-rows: auto auto auto auto auto auto auto auto auto auto;
   grid-gap: 5px;
 }
-
+#grid > div {
+  background-size: cover;
+}
 #container {
   display:flex;
   width: 1000px;
