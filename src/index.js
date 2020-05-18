@@ -16,33 +16,44 @@ const changeBrushSelectionListener = document.querySelectorAll('input[name="brus
 })
 
 const startClickListener = document.getElementById("start").addEventListener("click", function() {
-  eraseBoard(); 
-
+  eraseBoard(false);
   let path;
-  path = bfs(startCoordinatePair, finishCoordinatePair).then((x) => {
-    for (let i = 1; i < x.length; i++) {
-      moveElement(adjacencyMatrix[x[i - 1].y][x[i-1].x], adjacencyMatrix[x[i].y][x[i].x])
+  path = bfs(startCoordinatePair, finishCoordinatePair).then(async (x) => {
+    if (x !== undefined) {
+      x.reverse();
+      for (let i = 1; i < x.length; i++) {
+        moveElement(adjacencyMatrix[x[i - 1].y][x[i-1].x], adjacencyMatrix[x[i].y][x[i].x])
+        await sleep(100)
+      }
     }
   })
   start.backgroundColor = ""
 })
 
 const clearClickListener = document.getElementById("clear").addEventListener("click", function() {
-  eraseBoard();
+  eraseBoard(true);
 });
 
 function getPair(x, y) {
   return {x:x, y:y}
 }
 
-function eraseBoard() {
-  console.log("Board Erased")
+function eraseBoard(shouldEraseWalls) {
   for (let y = 0; y < gridSize; y++) {
     for (let x = 0; x < gridSize; x++) {
-      if (start !== adjacencyMatrix[y][x] && finish !== adjacencyMatrix[y][x]) {
-        adjacencyMatrix[y][x].style.backgroundImage = "none"
-        adjacencyMatrix[y][x].style.backgroundColor = "white"
+
+      let currentElement = adjacencyMatrix[y][x]
+      if (start === currentElement || finish === currentElement) {
+        continue
       }
+
+      if (currentElement.getAttribute("state") === "wall" && !shouldEraseWalls) {
+        continue
+      }
+   
+      currentElement.setAttribute("state", "none");
+      currentElement.style.backgroundImage = "none"
+      currentElement.style.backgroundColor = "white"
     }
   }
 }
@@ -75,13 +86,11 @@ function computeKey(pair) {
 function getPath(lastChild, startCoordinatePair, parentMap) {
   let path = []
   let currPair = lastChild
-  console.log("getPath", parentMap);
 
   while (currPair !== undefined && computeKey(currPair) !==
         computeKey(startCoordinatePair)) {
     path.push(currPair)
     currPair = parentMap[computeKey(currPair)]
-    console.log(currPair)
   }
 
   return path;
@@ -132,7 +141,7 @@ async function bfs(startCoordinatePair, endCoordinatePair) {
 }
 
 function moveElement(fromElement, toElement) {
-  toElement.style.backgroundImage = 'url(../src/dude.bmp)'
+  fromElement.style.backgroundImage = 'url(../src/dude.bmp)'
 }
 
 for (let y = 0; y < gridSize; y++) {
