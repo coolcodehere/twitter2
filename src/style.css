@@ -8,6 +8,7 @@ body {
   display: grid;
   grid-gap: 5px;
 }
+
 #grid > div {
   background-size: cover;
   background-position: center center;
@@ -15,8 +16,8 @@ body {
 
 #container {
   display:flex;
-  width: 1000px;
-  height: 800px;
+  width: 50em;
+  height: 40em;
   margin-top: 1em;
   padding: 5px;
 }
