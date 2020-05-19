@@ -22,12 +22,15 @@ const startClickListener = document.getElementById("start").addEventListener("cl
     if (x !== undefined) {
       x.reverse();
       for (let i = 1; i < x.length; i++) {
-        moveElement(adjacencyMatrix[x[i - 1].y][x[i-1].x], adjacencyMatrix[x[i].y][x[i].x])
-        await sleep(100)
+        if (i === x.length - 1) {
+          moveElement(adjacencyMatrix[x[i - 1].y][x[i-1].x], adjacencyMatrix[x[i - 1].y][x[i-1].x])
+        } else {
+          moveElement(adjacencyMatrix[x[i - 1].y][x[i-1].x], adjacencyMatrix[x[i].y][x[i].x])
+        }
+        await sleep(200)
       }
     }
   })
-  start.backgroundColor = ""
 })
 
 const clearClickListener = document.getElementById("clear").addEventListener("click", function() {
@@ -118,11 +121,7 @@ async function bfs(startCoordinatePair, endCoordinatePair) {
     let pairs = [getPair(currPair.x, currPair.y + 1),
                 getPair(currPair.x, currPair.y - 1),
                 getPair(currPair.x + 1, currPair.y),
-                getPair(currPair.x - 1, currPair.y),
-                getPair(currPair.x + 1, currPair.y + 1),
-                getPair(currPair.x - 1, currPair.y - 1),
-                getPair(currPair.x + 1, currPair.y - 1),
-                getPair(currPair.x - 1, currPair.y + 1)]
+                getPair(currPair.x - 1, currPair.y)]
 
     for (let i = 0; i < pairs.length; i++) {
       if (isValidCoord(pairs[i]) && visited[computeKey(pairs[i])] === undefined) {
@@ -141,7 +140,9 @@ async function bfs(startCoordinatePair, endCoordinatePair) {
 }
 
 function moveElement(fromElement, toElement) {
-  fromElement.style.backgroundImage = 'url(../src/dude.bmp)'
+  fromElement.style.backgroundImage = 'none'
+  fromElement.style.backgroundColor = 'magenta'
+  toElement.style.backgroundImage = 'url(../src/dude.bmp)'
 }
 
 for (let y = 0; y < gridSize; y++) {
