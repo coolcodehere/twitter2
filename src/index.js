@@ -2,9 +2,9 @@ const grid = document.getElementById("grid")
 const gridSize = 10
 grid.style.gridTemplateColumns = `repeat(${gridSize}, auto)`;
 grid.style.gridTemplatRows = `repeat(${gridSize}, auto)`;
-let start
+let start = undefined
 let startCoordinatePair = {x:0, y:0}
-let finish 
+let finish = undefined
 let finishCoordinatePair = {x:0, y:0};
 let brush
 let adjacencyMatrix = new Array(gridSize)
@@ -17,15 +17,17 @@ const changeBrushSelectionListener = document.querySelectorAll('input[name="brus
 
 const startClickListener = document.getElementById("start").addEventListener("click", function() {
   eraseBoard(false);
-  let path;
-  path = bfs(startCoordinatePair, finishCoordinatePair).then(async (x) => {
+  if (start === undefined || finish === undefined) {
+    return
+  }
+  let path = bfs(startCoordinatePair, finishCoordinatePair).then(async (x) => {
     if (x !== undefined) {
       x.reverse();
       for (let i = 1; i < x.length; i++) {
         if (i === x.length - 1) {
-          moveElement(adjacencyMatrix[x[i - 1].y][x[i-1].x], adjacencyMatrix[x[i - 1].y][x[i-1].x])
+          moveElement(adjacencyMatrix[x[i - 1].y][x[i - 1].x], adjacencyMatrix[x[i - 1].y][x[i - 1].x])
         } else {
-          moveElement(adjacencyMatrix[x[i - 1].y][x[i-1].x], adjacencyMatrix[x[i].y][x[i].x])
+          moveElement(adjacencyMatrix[x[i - 1].y][x[i - 1].x], adjacencyMatrix[x[i].y][x[i].x])
         }
         await sleep(200)
       }
@@ -44,16 +46,12 @@ function getPair(x, y) {
 function eraseBoard(shouldEraseWalls) {
   for (let y = 0; y < gridSize; y++) {
     for (let x = 0; x < gridSize; x++) {
-
       let currentElement = adjacencyMatrix[y][x]
-      if (start === currentElement || finish === currentElement) {
+
+      if (start === currentElement || finish === currentElement || currentElement.getAttribute("state") === "wall") {
         continue
       }
 
-      if (currentElement.getAttribute("state") === "wall" && !shouldEraseWalls) {
-        continue
-      }
-   
       currentElement.setAttribute("state", "none");
       currentElement.style.backgroundImage = "none"
       currentElement.style.backgroundColor = "white"
@@ -79,8 +77,6 @@ function isValidCoord(coordinatePair) {
 
   return false
 }
-
-
 
 function computeKey(pair) {
   return pair.x + ", " + pair.y
@@ -153,15 +149,35 @@ for (let y = 0; y < gridSize; y++) {
     adjacencyMatrix[y][x] = gridElement
     gridElement.style.backgroundColor = "white"
     gridElement.style.cursor = "pointer"
+    gridElement.setAttribute("state", "none");
 
     gridElement.onclick = () => {
       switch (brush) {
+        case "erase":
+          if (gridElement === start) {
+            start = undefined
+          } else if (gridElement === finish) {
+            finish = undefined
+          }
+          gridElement.style.backgroundImage = 'none'
+          gridElement.style.backgroundColor = 'white'
+          gridElement.setAttribute("state", "none");
+          break
+
         case "wall":
+          if (gridElement === start) {
+            start = undefined
+          } else if (gridElement === finish) {
+            finish = undefined
+          }
           gridElement.style.backgroundImage = 'url(../src/wall.bmp)'
           gridElement.setAttribute("state", "wall");
           break
 
         case "begin":
+          if (gridElement === finish) {
+            finish = undefined
+          }
           if (start) {
             start.style.backgroundColor = "white"
           }
@@ -172,6 +188,9 @@ for (let y = 0; y < gridSize; y++) {
           break
 //bug
         case "finish":
+          if (gridElement === start) {
+            start = undefined
+          }
           if (finish) {
             finish.style.backgroundColor = "white"
           }
